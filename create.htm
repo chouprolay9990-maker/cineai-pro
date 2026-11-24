@@ -1,0 +1,337 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Create Recap - CINEAI PRO</title><link rel="stylesheet" href="style.css"><meta name="theme-color" content="#100d18"><style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 18px;
+  padding-bottom: 100px;
+  background: #0b0911;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  padding: 15px 0;
+  border-bottom: 1px solid #49306d;
+}
+
+.header h2 {
+  color: #d5a6ff;
+}
+
+.box {
+  background: #191421;
+  border: 1px solid #49306d;
+  border-radius: 16px;
+  padding: 18px;
+  margin-top: 18px;
+}
+
+h3 {
+  color: #d5a6ff;
+  margin-top: 0;
+}
+
+label {
+  display: block;
+  margin: 15px 0 8px;
+  color: #d5a6ff;
+  font-size: 13px;
+}
+
+input:not([type="checkbox"]),
+select,
+textarea {
+  width: 100%;
+  padding: 13px;
+  border-radius: 10px;
+  border: 1px solid #49306d;
+  background: #100d18;
+  color: white;
+  outline: none;
+}
+
+input[type="file"] {
+  font-size: 12px;
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+button {
+  width: 100%;
+  padding: 15px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(90deg,#873bd1,#c18aff);
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.back-btn {
+  background: #292033;
+}
+
+.note {
+  color: #aaa;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+video {
+  width: 100%;
+  background: #000;
+  border-radius: 12px;
+  margin-top: 12px;
+}
+
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+  color: white;
+}
+
+.check-row input {
+  width: 18px;
+  height: 18px;
+}
+
+.status {
+  color: #d5a6ff;
+  text-align: center;
+  margin-top: 18px;
+  font-size: 13px;
+}
+</style></head><body><header class="header">
+  <h2>🎬 CINEAI PRO</h2>
+  <p class="note">AI Recap Creation Studio</p>
+</header><!-- VIDEO UPLOAD --><div class="box"><h3>📹 Upload Video</h3><label>Select Your Video</label>
+
+<input
+type="file"
+id="videoFile"
+accept="video/*"
+
+«»
+
+<video
+id="videoPreview"
+controls
+playsinline
+hidden
+
+«</video>»
+
+<p id="videoInfo" class="note">
+  No video selected.
+</p></div><!-- AUDIO UPLOAD --><div class="box"><h3>🎵 Background Audio</h3><label>Select Audio</label>
+
+<input
+type="file"
+id="audioFile"
+accept="audio/*"
+
+«»
+
+<p id="audioInfo" class="note">
+  No audio selected.
+</p></div><!-- RECAP SETTINGS --><div class="box"><h3>⚙️ Recap Settings</h3><label>Recap Duration</label>
+
+<select id="length">
+  <option value="1">1 Minute</option>
+  <option value="3">3 Minutes</option>
+  <option value="5" selected>5 Minutes</option>
+  <option value="10">10 Minutes</option>
+  <option value="15">15 Minutes</option>
+  <option value="20">20 Minutes</option>
+  <option value="25">25 Minutes</option>
+  <option value="30">30 Minutes</option>
+</select><label>Language</label>
+
+<select id="language">
+  <option value="Myanmar">Myanmar</option>
+  <option value="Thai">Thai</option>
+  <option value="English">English</option>
+</select><label>Voice Style</label>
+
+<select id="voiceStyle">
+  <option value="Professional">Professional</option>
+  <option value="Cinematic">Cinematic</option>
+  <option value="Emotional">Emotional</option>
+  <option value="Deep">Deep Voice</option>
+  <option value="Natural">Natural</option>
+</select></div><!-- SCRIPT --><div class="box"><h3>📝 AI Recap Script</h3><textarea
+  id="script"
+  placeholder="Write your movie recap script here..."
+></textarea></div><!-- EDITING --><div class="box"><h3>✨ Editing Options</h3><label class="check-row">
+  <input type="checkbox" id="subToggle" checked>
+  Enable Subtitles
+</label><label class="check-row">
+  <input type="checkbox" id="autoEdit" checked>
+  Enable AI Auto Editing
+</label></div><!-- AI FLOW --><div class="box"><h3>⚡ AI Flow Settings</h3><label>Generation Duration</label>
+
+<select id="flowDuration">
+  <option value="5">5 Seconds</option>
+  <option value="10">10 Seconds</option>
+  <option value="15">15 Seconds</option>
+  <option value="20">20 Seconds</option>
+  <option value="25">25 Seconds</option>
+  <option value="30" selected>30 Seconds</option>
+</select><p class="note">
+Maximum AI Flow duration: 30 seconds per generation.
+Recap duration and AI Flow duration are separate settings.
+</p></div><!-- BUTTONS --><button onclick="saveProject()">
+💾 SAVE PROJECT
+</button><button onclick="generateRecap()">
+✨ GENERATE RECAP
+</button><button class="back-btn" onclick="location.href='studio.html'">
+← BACK TO STUDIO
+</button><button class="back-btn" onclick="location.href='index.html'">
+🏠 HOME
+</button><p id="status" class="status"></p><script>
+
+let currentVideoURL = null;
+
+const videoInput = document.getElementById("videoFile");
+
+videoInput.addEventListener("change", function() {
+
+  const file = this.files[0];
+
+  if (!file) return;
+
+  if (currentVideoURL) {
+    URL.revokeObjectURL(currentVideoURL);
+  }
+
+  currentVideoURL = URL.createObjectURL(file);
+
+  const preview = document.getElementById("videoPreview");
+
+  preview.src = currentVideoURL;
+  preview.hidden = false;
+
+  document.getElementById("videoInfo").innerText =
+    "Video: " + file.name +
+    " | " +
+    (file.size / 1024 / 1024).toFixed(2) + " MB";
+
+});
+
+document.getElementById("audioFile")
+.addEventListener("change", function() {
+
+  const file = this.files[0];
+
+  if (!file) return;
+
+  document.getElementById("audioInfo").innerText =
+    "Audio: " + file.name;
+
+});
+
+function getSettings() {
+
+  return {
+
+    length: document.getElementById("length").value,
+
+    language: document.getElementById("language").value,
+
+    voice: document.getElementById("voiceStyle").value,
+
+    script: document.getElementById("script").value,
+
+    subtitle: document.getElementById("subToggle").checked,
+
+    autoEdit: document.getElementById("autoEdit").checked,
+
+    flowDuration: document.getElementById("flowDuration").value
+
+  };
+
+}
+
+function saveProject() {
+
+  const settings = getSettings();
+
+  localStorage.setItem(
+    "recapSettings",
+    JSON.stringify(settings)
+  );
+
+  document.getElementById("status").innerText =
+    "✅ Project settings saved successfully!";
+
+}
+
+function generateRecap() {
+
+  saveProject();
+
+  const file = document.getElementById("videoFile").files[0];
+
+  if (!file) {
+
+    document.getElementById("status").innerText =
+      "Please select a video first.";
+
+    return;
+
+  }
+
+  document.getElementById("status").innerText =
+    "Settings saved. AI Generation API is not connected yet.";
+
+}
+
+function loadSettings() {
+
+  const settings = JSON.parse(
+    localStorage.getItem("recapSettings") || "null"
+  );
+
+  if (!settings) return;
+
+  document.getElementById("length").value =
+    settings.length || "5";
+
+  document.getElementById("language").value =
+    settings.language || "Myanmar";
+
+  document.getElementById("voiceStyle").value =
+    settings.voice || "Professional";
+
+  document.getElementById("script").value =
+    settings.script || "";
+
+  document.getElementById("subToggle").checked =
+    settings.subtitle !== false;
+
+  document.getElementById("autoEdit").checked =
+    settings.autoEdit !== false;
+
+  document.getElementById("flowDuration").value =
+    settings.flowDuration || "30";
+
+}
+
+window.addEventListener(
+  "DOMContentLoaded",
+  loadSettings
+);
+
+</script></body>
+</html>

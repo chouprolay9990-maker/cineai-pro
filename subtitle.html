@@ -1,0 +1,217 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Subtitle Studio</title>
+<link rel="stylesheet" href="style.css"><style>
+.container {
+padding:20px;
+max-width:650px;
+margin:auto;
+}
+
+.back {
+background:none;
+border:none;
+color:#c58aff;
+font-size:17px;
+margin-bottom:25px;
+}
+
+.box {
+background:#171120;
+border:1px solid #49345d;
+border-radius:17px;
+padding:20px;
+margin:18px 0;
+}
+
+.box h3 {
+color:#c58aff;
+margin-bottom:15px;
+}
+
+label {
+display:block;
+margin:15px 0 8px;
+font-size:13px;
+}
+
+select,input,textarea {
+width:100%;
+}
+
+select,textarea {
+padding:13px;
+border-radius:10px;
+background:#0c0912;
+border:1px solid #49345d;
+color:white;
+}
+
+textarea {
+min-height:110px;
+}
+
+input[type=color] {
+height:45px;
+background:#0c0912;
+border:1px solid #49345d;
+border-radius:8px;
+}
+
+input[type=range] {
+accent-color:#b45aff;
+}
+
+.preview {
+background:#050505;
+height:180px;
+display:flex;
+justify-content:center;
+align-items:end;
+padding:20px;
+border-radius:12px;
+margin-top:15px;
+}
+
+#subtitlePreview {
+font-size:22px;
+font-weight:bold;
+color:white;
+text-align:center;
+-webkit-text-stroke:1px black;
+text-shadow:2px 2px 4px black;
+}
+
+.action {
+width:100%;
+padding:15px;
+border:0;
+border-radius:12px;
+background:linear-gradient(90deg,#8535d2,#c18aff);
+color:white;
+font-weight:bold;
+margin-top:15px;
+}
+</style></head><body><div class="container"><button class="back" onclick="history.back()">← Back</button>
+
+<h1>💬 Subtitle Studio</h1>
+<p style="color:#aaa;margin-top:10px">
+Create beautiful cinematic subtitles.
+</p><div class="box">
+<h3>🌐 Subtitle Language</h3><select id="language">
+<option>Myanmar</option>
+<option>Thai</option>
+<option>English</option>
+</select><label>Subtitle Text</label>
+
+<textarea id="subtitleText"
+placeholder="Enter your subtitle here..."
+oninput="updatePreview()"></textarea></div><div class="box">
+<h3>🎨 Subtitle Design</h3><label>Font Size</label>
+<input type="range" id="fontSize"
+min="14" max="40" value="22"
+oninput="updatePreview()">
+
+<label>Text Color</label>
+<input type="color" id="fontColor"
+value="#ffffff" oninput="updatePreview()">
+
+<label>Subtitle Position</label>
+<select id="position" onchange="updatePreview()">
+
+<option value="flex-end">Bottom</option>
+<option value="center">Center</option>
+<option value="flex-start">Top</option>
+</select><label>Background Box</label>
+<select id="background" onchange="updatePreview()">
+
+<option value="transparent">None</option>
+<option value="rgba(0,0,0,0.8)">Black</option>
+<option value="rgba(120,40,200,0.8)">Purple</option>
+</select><label>Word Highlight Color</label>
+<input type="color" id="highlight" value="#ffd166">
+
+</div><div class="box">
+<h3>🎬 Live Preview</h3><div class="preview" id="previewBox">
+<div id="subtitlePreview">
+Your subtitle appears here.
+</div>
+</div><button class="action" onclick="saveSubtitle()">
+💾 SAVE SUBTITLE
+</button><button class="action" onclick="downloadSubtitle()">
+⬇ EXPORT TXT
+</button>
+</div><p id="status" style="color:#e4bb68"></p></div><script>
+
+function updatePreview() {
+
+let preview = document.getElementById("subtitlePreview");
+let box = document.getElementById("previewBox");
+
+preview.innerText =
+document.getElementById("subtitleText").value ||
+"Your subtitle appears here.";
+
+preview.style.fontSize =
+document.getElementById("fontSize").value + "px";
+
+preview.style.color =
+document.getElementById("fontColor").value;
+
+box.style.justifyContent =
+document.getElementById("position").value;
+
+preview.style.background =
+document.getElementById("background").value;
+
+preview.style.padding = "8px";
+preview.style.borderRadius = "5px";
+
+}
+
+function saveSubtitle() {
+
+let data = {
+language: document.getElementById("language").value,
+text: document.getElementById("subtitleText").value,
+fontSize: document.getElementById("fontSize").value,
+color: document.getElementById("fontColor").value,
+position: document.getElementById("position").value,
+background: document.getElementById("background").value,
+highlight: document.getElementById("highlight").value
+};
+
+localStorage.setItem("mySubtitle", JSON.stringify(data));
+
+document.getElementById("status").innerText =
+"✓ Subtitle settings saved successfully!";
+
+}
+
+function downloadSubtitle() {
+
+let text = document.getElementById("subtitleText").value;
+
+if(!text.trim()) {
+alert("Please enter subtitle text!");
+return;
+}
+
+let blob = new Blob([text], {type:"text/plain;charset=utf-8"});
+let url = URL.createObjectURL(blob);
+
+let a = document.createElement("a");
+a.href = url;
+a.download = "subtitle.txt";
+a.click();
+
+URL.revokeObjectURL(url);
+
+}
+
+updatePreview();
+
+</script></body>
+</html>

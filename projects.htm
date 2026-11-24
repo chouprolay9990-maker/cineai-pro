@@ -1,0 +1,252 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Projects - AI Recap Pro</title>
+<link rel="stylesheet" href="style.css"><style>
+.container {
+    padding:20px;
+    max-width:650px;
+    margin:auto;
+}
+
+.back {
+    background:none;
+    border:none;
+    color:#c58aff;
+    font-size:17px;
+    margin-bottom:25px;
+}
+
+.box {
+    background:#171120;
+    border:1px solid #49345d;
+    border-radius:16px;
+    padding:18px;
+    margin:15px 0;
+}
+
+.box h3 {
+    color:#c58aff;
+    margin-bottom:12px;
+}
+
+input {
+    width:100%;
+    padding:13px;
+    border-radius:10px;
+    background:#0c0912;
+    border:1px solid #49345d;
+    color:white;
+    margin:10px 0;
+}
+
+.action {
+    width:100%;
+    padding:14px;
+    border:0;
+    border-radius:10px;
+    background:linear-gradient(90deg,#8535d2,#c18aff);
+    color:white;
+    font-weight:bold;
+    margin-top:10px;
+}
+
+.project {
+    background:#151120;
+    border:1px solid #49345d;
+    border-radius:15px;
+    padding:17px;
+    margin:15px 0;
+}
+
+.project h3 {
+    color:#e4bb68;
+    margin-bottom:10px;
+}
+
+.project p {
+    color:#aaa;
+    font-size:12px;
+    margin:6px 0;
+}
+
+.project button {
+    padding:10px;
+    border:0;
+    border-radius:8px;
+    margin:8px 4px 0 0;
+}
+
+.edit {
+    background:#8535d2;
+    color:white;
+}
+
+.delete {
+    background:#8e2525;
+    color:white;
+}
+
+.empty {
+    text-align:center;
+    padding:35px 10px;
+    color:#aaa;
+}
+
+</style></head><body><div class="container"><button class="back" onclick="history.back()">← Back</button>
+
+<h1>📁 My Projects</h1><p style="color:#aaa;margin-top:10px">
+Manage your cinematic creations.
+</p><div class="box"><h3>✨ Create New Project</h3><input type="text" id="projectName"
+placeholder="Enter project name...">
+
+<button class="action" onclick="createProject()">
++ CREATE PROJECT
+</button></div><h2 style="margin:25px 0 15px">Recent Projects</h2><div id="projectList"></div></div><script>
+
+function getProjects() {
+
+return JSON.parse(
+localStorage.getItem("myProjects") || "[]"
+);
+
+}
+
+function saveProjects(data) {
+
+localStorage.setItem(
+"myProjects",
+JSON.stringify(data)
+);
+
+}
+
+function createProject() {
+
+let name = document
+.getElementById("projectName")
+.value.trim();
+
+if(!name) {
+alert("Please enter project name!");
+return;
+}
+
+let projects = getProjects();
+
+let project = {
+id:Date.now(),
+name:name,
+language:"Myanmar",
+duration:"Not generated",
+lastEdited:new Date().toLocaleString(),
+status:"Draft"
+};
+
+projects.unshift(project);
+
+saveProjects(projects);
+
+document.getElementById("projectName").value = "";
+
+renderProjects();
+
+}
+
+function renderProjects() {
+
+let projects = getProjects();
+
+let list = document.getElementById("projectList");
+
+if(projects.length === 0) {
+
+list.innerHTML = `
+<div class="empty">
+<div style="font-size:45px">🎞️</div>
+<h3>No Projects Yet</h3>
+<p>Your creations will appear here.</p>
+</div>
+`;
+
+return;
+
+}
+
+list.innerHTML = projects.map(p => `
+
+<div class="project">
+
+<h3>🎬 ${escapeHTML(p.name)}</h3>
+
+<p>🌐 Language: ${escapeHTML(p.language)}</p>
+<p>⏱️ Duration: ${escapeHTML(p.duration)}</p>
+<p>📅 Last Edited: ${escapeHTML(p.lastEdited)}</p>
+<p>📌 Status: ${escapeHTML(p.status)}</p>
+
+<button class="edit"
+onclick="editProject(${p.id})">
+✏️ Edit
+</button>
+
+<button class="delete"
+onclick="deleteProject(${p.id})">
+🗑️ Delete
+</button>
+
+</div>
+
+`).join("");
+
+}
+
+function editProject(id) {
+
+let projects = getProjects();
+
+let project = projects.find(p => p.id === id);
+
+if(!project) return;
+
+localStorage.setItem(
+"currentProject",
+JSON.stringify(project)
+);
+
+window.location.href = "create.html";
+
+}
+
+function deleteProject(id) {
+
+if(!confirm("Delete this project?")) return;
+
+let projects = getProjects().filter(
+p => p.id !== id
+);
+
+saveProjects(projects);
+
+renderProjects();
+
+}
+
+function escapeHTML(text) {
+
+return String(text).replace(/[&<>"']/g, function(c) {
+return {
+'&':'&amp;',
+'<':'&lt;',
+'>':'&gt;',
+'"':'&quot;',
+"'":'&#39;'
+}[c];
+});
+
+}
+
+renderProjects();
+
+</script></body>
+</html>

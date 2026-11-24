@@ -1,0 +1,77 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CINEAI PRO - AI Editing Studio</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:20px 16px 40px;background:#0b0911;color:white;font-family:Arial,sans-serif}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}
+a{color:#d8b65d;text-decoration:none}
+h1{color:#d8b65d;font-size:27px;margin-bottom:5px}
+p{color:#aaa;font-size:13px;line-height:1.6}
+.hero{background:linear-gradient(140deg,#32164b,#171321);border:1px solid #7544a0;border-radius:18px;padding:20px;margin:18px 0}
+.hero h2{color:#e2bd63}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tool{background:#171321;border:1px solid #49365e;border-radius:16px;padding:17px 12px;min-height:120px;text-align:center;cursor:pointer}
+.tool .icon{font-size:28px}
+.tool h3{font-size:15px;margin:10px 0 5px;color:#e4bd60}
+.tool p{font-size:11px;margin:0}
+button{width:100%;padding:14px;border:0;border-radius:12px;background:linear-gradient(100deg,#8c42d8,#d0a94e);color:white;font-weight:bold;margin-top:15px}
+.badge{display:inline-block;background:#493064;color:#e4bd60;padding:5px 9px;border-radius:20px;font-size:10px}
+</style>
+</head>
+<body><header>
+<a href="index.html">← Home</a>
+<span style="color:#d8b65d">CINEAI PRO</span>
+</header><h1>AI Editing Studio</h1>
+<p>Your creative workspace for cinematic video production.</p><div class="hero">
+<span class="badge">CINEMATIC AI WORKSPACE</span>
+<h2>Create Something Amazing</h2>
+<p>Manage your voice, subtitles, translations and export settings from one studio.</p>
+<button onclick="location.href='create.html'">＋ Create New Recap</button>
+</div><h2 style="color:#d8b65d;font-size:19px">Editing Tools</h2><div class="grid"><div class="tool" onclick="location.href='voice.html'">
+<div class="icon">🎙️</div>
+<h3>Voice Studio</h3>
+<p>Voice and narration tools</p>
+</div><div class="tool" onclick="location.href='subtitle.html'">
+<div class="icon">💬</div>
+<h3>Subtitle Studio</h3>
+<p>Customize subtitles</p>
+</div><div class="tool" onclick="location.href='translate.html'">
+<div class="icon">🌐</div>
+<h3>AI Translate</h3>
+<p>Myanmar / Thai / English</p>
+</div><div class="tool" onclick="location.href='export.html'">
+<div class="icon">🎬</div>
+<h3>Export Studio</h3>
+<p>Video export settings</p>
+</div><div class="tool" onclick="comingSoon('AI Flow')">
+<div class="icon">✨</div>
+<h3>AI Flow</h3>
+<p>AI video generation</p>
+<span class="badge">COMING SOON</span>
+</div><div class="tool" onclick="comingSoon('Music Flow')">
+<div class="icon">🎵</div>
+<h3>Music Flow</h3>
+<p>AI music generation</p>
+<span class="badge">COMING SOON</span>
+</div><div class="tool" onclick="comingSoon('Pro Vision')">
+<div class="icon">👁️</div>
+<h3>Pro Vision</h3>
+<p>Advanced visual tools</p>
+<span class="badge">COMING SOON</span>
+</div><div class="tool" onclick="location.href='pro.html'">
+<div class="icon">👑</div>
+<h3>Pro Membership</h3>
+<p>Explore premium features</p>
+</div></div><div class="hero" style="margin-top:22px">
+<h2>My Projects</h2>
+<p>Continue editing your saved projects.</p>
+<button onclick="location.href='projects.html'">Open My Projects</button>
+</div><script>
+function comingSoon(name){
+ alert(name+" ကို အသုံးပြုနိုင်ရန် AI Backend/API ချိတ်ဆက်ရန် လိုအပ်ပါတယ်။");
+}
+</script></body>
+</html>

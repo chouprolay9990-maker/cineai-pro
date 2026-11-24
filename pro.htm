@@ -1,0 +1,102 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CINEAI PRO - Membership</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:20px 16px 40px;background:#0b0911;color:white;font-family:Arial,sans-serif}
+header{display:flex;justify-content:space-between;margin-bottom:25px}
+a{color:#d8b65d;text-decoration:none}
+h1{color:#d8b65d;font-size:28px}
+p{color:#aaa;font-size:13px;line-height:1.6}
+.hero{text-align:center;padding:25px 15px;background:linear-gradient(145deg,#29153e,#171321);border:1px solid #8c42d8;border-radius:20px}
+.hero h2{color:#e4bd60;font-size:25px}
+.card{background:#171321;border:1px solid #49365e;border-radius:17px;padding:18px;margin:15px 0}
+.price{font-size:25px;color:#e4bd60;font-weight:bold;margin:10px 0}
+button{width:100%;padding:14px;border:0;border-radius:12px;background:linear-gradient(100deg,#8c42d8,#d0a94e);color:white;font-weight:bold;margin-top:12px;cursor:pointer}
+.feature{padding:9px 0;border-bottom:1px solid #30243c;color:#ddd;font-size:14px}
+.badge{display:inline-block;background:#59318a;color:#fff;padding:5px 12px;border-radius:20px;font-size:11px}
+.note{font-size:12px;color:#999}
+</style>
+</head>
+<body><header>
+<a href="index.html">← Home</a>
+<span style="color:#d8b65d">CINEAI PRO</span>
+</header><div class="hero">
+<span class="badge">PREMIUM MEMBERSHIP</span>
+<h1>Upgrade to Pro</h1>
+<h2>Unlock Your Creativity</h2>
+<p>Experience the next level of AI Cinematic Creation.</p>
+</div><div class="card">
+<h3 style="color:#d8b65d">PRO FEATURES</h3>
+<div class="feature">✦ Premium AI Voice Studio</div>
+<div class="feature">✦ Authorized Voice Cloning</div>
+<div class="feature">✦ Pro Vision Quality</div>
+<div class="feature">✦ AI Flow Video Generation</div>
+<div class="feature">✦ Music Flow</div>
+<div class="feature">✦ Nano Banana Image Flow</div>
+<div class="feature">✦ Premium Subtitle Tools</div>
+<div class="feature">✦ High Quality Export</div>
+<div class="feature">✦ Watermark-Free Export</div>
+</div><div class="card">
+<h3>1 Month Pro</h3>
+<div class="price">30,000 Ks</div>
+<button onclick="selectPlan('1 Month',30000)">Choose 1 Month</button>
+</div><div class="card">
+<h3>3 Months Pro</h3>
+<div class="price">90,000 Ks</div>
+<button onclick="selectPlan('3 Months',90000)">Choose 3 Months</button>
+</div><div class="card">
+<h3>6 Months Pro</h3>
+<div class="price">150,000 Ks</div>
+<button onclick="selectPlan('6 Months',150000)">Choose 6 Months</button>
+</div><div class="card">
+<span class="badge">BEST VALUE</span>
+<h3>1 Year Pro</h3>
+<div class="price">250,000 Ks</div>
+<button onclick="selectPlan('1 Year',250000)">Choose 1 Year</button>
+</div><div class="card">
+<h3 style="color:#d8b65d">Payment Methods</h3>
+<p>Choose your preferred payment method after selecting a package.</p>
+<button onclick="payment('WavePay')">WavePay</button>
+<button onclick="payment('KBZPay')">KBZPay</button>
+<p class="note">Payment verification and automatic Pro activation require a secure backend integration.</p>
+</div><script>
+let selectedPlan=null;
+
+function selectPlan(name,price){
+ selectedPlan={name:name,price:price};
+ localStorage.setItem("pendingPayment",JSON.stringify({
+  plan:name,
+  price:price,
+  status:"pending"
+ }));
+ alert("Selected: "+name+"\nPrice: "+price.toLocaleString()+" Ks\n\nအောက်မှာ Payment Method ရွေးပါ။");
+}
+
+function payment(method){
+ if(!selectedPlan){
+  alert("အရင်ဆုံး Pro Package ရွေးပါ။");
+  return;
+ }
+
+ const paymentData={
+  plan:selectedPlan.name,
+  price:selectedPlan.price,
+  method:method,
+  status:"pending",
+  createdAt:new Date().toISOString()
+ };
+
+ localStorage.setItem("pendingPayment",JSON.stringify(paymentData));
+
+ alert(
+  "Payment Method: "+method+
+  "\nPackage: "+selectedPlan.name+
+  "\nAmount: "+selectedPlan.price.toLocaleString()+" Ks"+
+  "\n\nPayment system ချိတ်ဆက်ရန် လိုအပ်ပါသေးတယ်။"
+ );
+}
+</script></body>
+</html>

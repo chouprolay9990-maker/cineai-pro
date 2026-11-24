@@ -1,0 +1,131 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CINEAI PRO - Export Studio</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:20px 16px;background:#0b0911;color:white;font-family:Arial,sans-serif}
+header{display:flex;justify-content:space-between;margin-bottom:25px}
+a{color:#d8b65d;text-decoration:none}
+h1{color:#d8b65d;font-size:26px}
+p{color:#aaa;font-size:13px}
+.card{background:#171321;border:1px solid #382849;border-radius:17px;padding:17px;margin:16px 0}
+label{display:block;color:#d8b65d;font-size:13px;margin:14px 0 7px}
+select,input{width:100%;padding:13px;background:#0c0a13;color:white;border:1px solid #49365e;border-radius:10px;font-size:15px}
+button{border:0;border-radius:12px;padding:14px;font-weight:bold;cursor:pointer}
+.primary{width:100%;margin-top:18px;background:linear-gradient(100deg,#8c42d8,#d0a94e);color:white}
+.info{background:#0c0a13;border-radius:10px;padding:13px;color:#aaa;font-size:13px;line-height:1.7}
+</style>
+</head>
+<body><header>
+<a href="index.html">← Home</a>
+<span style="color:#d8b65d">CINEAI PRO</span>
+</header><h1>Export Studio</h1>
+<p>Choose your video export settings.</p><div class="card"><label>Platform Preset</label>
+<select id="platform" onchange="setPreset()">
+
+<option value="tiktok">TikTok</option>
+<option value="shorts">YouTube Shorts</option>
+<option value="reels">Facebook / Instagram Reels</option>
+<option value="youtube">YouTube Video</option>
+<option value="custom">Custom</option>
+</select><label>Aspect Ratio</label>
+<select id="ratio">
+
+<option value="9:16">9:16 Portrait</option>
+<option value="16:9">16:9 Landscape</option>
+<option value="1:1">1:1 Square</option>
+<option value="4:5">4:5 Portrait</option>
+</select><label>Resolution</label>
+<select id="resolution">
+
+<option value="720p">720p HD</option>
+<option value="1080p" selected>1080p Full HD</option>
+<option value="4K">4K Ultra HD</option>
+<option value="8K">8K Ultra HD</option>
+</select><label>Frame Rate (FPS)</label>
+<select id="fps">
+
+<option value="30">30 FPS</option>
+<option value="60" selected>60 FPS</option>
+<option value="120">120 FPS</option>
+</select><label>Video Format</label>
+<select id="format">
+
+<option value="MP4">MP4</option>
+<option value="MOV">MOV</option>
+<option value="WEBM">WEBM</option>
+</select><label>Quality</label>
+<select id="quality">
+
+<option value="standard">Standard</option>
+<option value="high" selected>High Quality</option>
+<option value="maximum">Maximum Quality</option>
+</select><label>Watermark</label>
+<select id="watermark">
+
+<option value="on">With Watermark</option>
+<option value="off">No Watermark (Pro)</option>
+</select><button class="primary" onclick="startExport()">✦ Start Export</button>
+
+</div><div class="card">
+<h3 style="color:#d8b65d">Export Information</h3>
+<div class="info" id="info">
+Platform: TikTok<br>
+Ratio: 9:16<br>
+Resolution: 1080p<br>
+FPS: 60
+</div>
+<p>Actual video rendering and watermark removal require the export engine and Pro verification to be connected.</p>
+</div><script>
+function setPreset(){
+ const platform=document.getElementById("platform").value;
+ const ratio=document.getElementById("ratio");
+
+ if(platform==="tiktok" || platform==="shorts" || platform==="reels"){
+  ratio.value="9:16";
+ }else if(platform==="youtube"){
+  ratio.value="16:9";
+ }
+ updateInfo();
+}
+
+function updateInfo(){
+ const values={
+  platform:document.getElementById("platform").value,
+  ratio:document.getElementById("ratio").value,
+  resolution:document.getElementById("resolution").value,
+  fps:document.getElementById("fps").value,
+  format:document.getElementById("format").value,
+  quality:document.getElementById("quality").value,
+  watermark:document.getElementById("watermark").value
+ };
+
+ document.getElementById("info").innerHTML=
+ "Platform: "+values.platform.toUpperCase()+"<br>"+
+ "Ratio: "+values.ratio+"<br>"+
+ "Resolution: "+values.resolution+"<br>"+
+ "FPS: "+values.fps+"<br>"+
+ "Format: "+values.format+"<br>"+
+ "Quality: "+values.quality+"<br>"+
+ "Watermark: "+values.watermark;
+
+ return values;
+}
+
+function startExport(){
+ const settings=updateInfo();
+
+ localStorage.setItem("cineaiExport",JSON.stringify(settings));
+
+ alert("Export settings saved!\\n\\nActual video rendering engine is not connected yet.");
+}
+
+document.querySelectorAll("select").forEach(el=>{
+ el.addEventListener("change",updateInfo);
+});
+
+updateInfo();
+</script></body>
+</html>

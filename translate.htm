@@ -1,0 +1,112 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CINEAI PRO - AI Translate</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:20px 16px;background:#0b0911;color:white;font-family:Arial,sans-serif}
+header{display:flex;justify-content:space-between;margin-bottom:25px}
+a{color:#d8b65d;text-decoration:none}
+h1{font-size:26px;color:#d8b65d;margin-bottom:6px}
+p{color:#aaa;font-size:13px}
+.card{background:#171321;border:1px solid #382849;border-radius:17px;padding:17px;margin-top:18px}
+.row{display:flex;gap:10px;align-items:center}
+.row>*{flex:1;min-width:0}
+label{display:block;color:#d8b65d;font-size:13px;margin:14px 0 7px}
+select,textarea{width:100%;background:#0c0a13;color:white;border:1px solid #49365e;border-radius:10px;padding:13px;font-size:15px}
+textarea{height:150px;resize:vertical}
+button{border:0;border-radius:12px;padding:14px;font-weight:bold;cursor:pointer}
+.swap{background:#352344;color:#d8b65d;flex:0 0 45px}
+.primary{width:100%;margin-top:17px;background:linear-gradient(100deg,#8c42d8,#d0a94e);color:white}
+.result{background:#0c0a13;border:1px solid #49365e;border-radius:10px;padding:14px;min-height:120px;white-space:pre-wrap;line-height:1.6}
+.note{font-size:12px;color:#999;margin-top:12px}
+</style>
+</head>
+<body><header>
+<a href="index.html">← Home</a>
+<span style="color:#d8b65d">CINEAI PRO</span>
+</header><h1>AI Translate Studio</h1>
+<p>Translate your script into different languages.</p><div class="card">
+<div class="row">
+<div>
+<label>From</label>
+<select id="fromLang">
+<option value="Myanmar">Myanmar</option>
+<option value="English">English</option>
+<option value="Thai">Thai</option>
+</select>
+</div><button class="swap" onclick="swapLanguage()">⇄</button>
+
+<div>
+<label>To</label>
+<select id="toLang">
+<option value="English">English</option>
+<option value="Myanmar">Myanmar</option>
+<option value="Thai">Thai</option>
+</select>
+</div>
+</div><label>Original Text</label>
+
+<textarea id="sourceText" placeholder="Translate လုပ်ချင်တဲ့စာသား ရိုက်ထည့်ပါ..."></textarea><button class="primary" onclick="translateText()">✦ Translate Now</button>
+
+</div><div class="card">
+<label>Translation Result</label>
+<div class="result" id="result">ဘာသာပြန်ရလဒ် ဒီနေရာမှာ ပြသပါမယ်။</div><button class="primary" onclick="copyResult()">Copy Translation</button>
+<button class="primary" onclick="saveResult()">Save Translation</button>
+
+<p class="note">AI Translation API မချိတ်ဆက်ရသေးပါ။ API ချိတ်ဆက်ပြီးမှ တကယ့်ဘာသာပြန်မှု အလုပ်လုပ်ပါမယ်။</p>
+</div><script>
+function swapLanguage(){
+ const from=document.getElementById("fromLang");
+ const to=document.getElementById("toLang");
+ const old=from.value;
+ from.value=to.value;
+ to.value=old;
+}
+
+function translateText(){
+ const text=document.getElementById("sourceText").value.trim();
+ const from=document.getElementById("fromLang").value;
+ const to=document.getElementById("toLang").value;
+
+ if(!text){
+  alert("စာသားအရင်ထည့်ပါ။");
+  return;
+ }
+
+ if(from===to){
+  alert("ဘာသာစကား မတူတာကို ရွေးပါ။");
+  return;
+ }
+
+ document.getElementById("result").textContent=
+ "Translation API မချိတ်ဆက်ရသေးပါ။\n\n"+
+ "From: "+from+"\n"+
+ "To: "+to+"\n\n"+
+ "သင့်စာသားကို AI ဘာသာပြန်နိုင်ရန် Backend/API ချိတ်ဆက်ရန် လိုအပ်ပါတယ်။";
+}
+
+function copyResult(){
+ const text=document.getElementById("result").textContent;
+ if(navigator.clipboard && navigator.clipboard.writeText){
+  navigator.clipboard.writeText(text)
+  .then(()=>alert("Copied!"))
+  .catch(()=>alert("Copy မလုပ်နိုင်ပါ။"));
+ }else{
+  alert("ဒီ Browser မှာ Clipboard မရနိုင်ပါ။");
+ }
+}
+
+function saveResult(){
+ const data={
+  from:document.getElementById("fromLang").value,
+  to:document.getElementById("toLang").value,
+  source:document.getElementById("sourceText").value,
+  result:document.getElementById("result").textContent
+ };
+ localStorage.setItem("cineaiTranslation",JSON.stringify(data));
+ alert("Translation saved!");
+}
+</script></body>
+</html>

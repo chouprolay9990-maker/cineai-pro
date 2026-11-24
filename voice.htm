@@ -1,0 +1,256 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Voice Studio - CINEAI PRO</title>
+<link rel="stylesheet" href="style.css"><style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 18px;
+  padding-bottom: 40px;
+  background: #0b0911;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+h2, h3 {
+  color: #d5a6ff;
+}
+
+.box {
+  background: #191421;
+  border: 1px solid #49306d;
+  border-radius: 16px;
+  padding: 18px;
+  margin-top: 18px;
+}
+
+label {
+  display: block;
+  margin: 15px 0 8px;
+  color: #d5a6ff;
+  font-size: 13px;
+}
+
+select, textarea {
+  width: 100%;
+  padding: 13px;
+  background: #100d18;
+  border: 1px solid #49306d;
+  border-radius: 10px;
+  color: white;
+}
+
+textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: #a65cff;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 12px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(90deg,#873bd1,#c18aff);
+  color: white;
+  font-weight: bold;
+}
+
+.secondary {
+  background: #292033;
+}
+
+.note {
+  color: #aaa;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.status {
+  color: #d5a6ff;
+  text-align: center;
+  margin-top: 15px;
+}
+</style></head><body><h2>🎙️ Voice Studio</h2>
+<p class="note">Create your voice narration.</p><div class="box"><h3>🌐 Voice Language</h3><label>Select Language</label>
+
+<select id="voiceLanguage" onchange="loadVoices()">
+  <option value="my">Myanmar</option>
+  <option value="th">Thai</option>
+  <option value="en">English</option>
+</select><label>Available Voice</label>
+
+<select id="voiceSelect">
+  <option value="">Default Device Voice</option>
+</select><p class="note">
+Voice availability depends on your Android device and browser.
+</p></div><div class="box"><h3>👤 Voice Settings</h3><label>Voice Style</label>
+
+<select id="voiceStyle">
+  <option value="natural">Natural</option>
+  <option value="professional">Professional</option>
+  <option value="cinematic">Cinematic</option>
+  <option value="emotional">Emotional</option>
+</select><label>Speed: <span id="speedValue">1.0</span></label>
+
+<input type="range" id="speed"
+min="0.5" max="2" step="0.1" value="1"
+oninput="speedValue.innerText=this.value">
+
+<label>Pitch: <span id="pitchValue">1.0</span></label>
+
+<input type="range" id="pitch"
+min="0.5" max="2" step="0.1" value="1"
+oninput="pitchValue.innerText=this.value">
+
+</div><div class="box"><h3>📝 Voice Script</h3><textarea id="voiceScript"
+placeholder="Write your narration script here..."></textarea><button onclick="previewVoice()">
+▶ PLAY VOICE
+</button><button class="secondary" onclick="pauseVoice()">
+⏸ PAUSE
+</button><button class="secondary" onclick="stopVoice()">
+⏹ STOP
+</button><p id="voiceStatus" class="status">
+Ready to create voice.
+</p></div><div class="box"><h3>👑 Pro Voice Features</h3><p class="note">
+Premium Voices and authorized personal voice cloning
+require a connected AI voice service.
+</p><button onclick="alert('Voice Clone API is not connected yet.')">
+🎙️ VOICE CLONE
+</button></div><button class="secondary"
+onclick="location.href='studio.html'">
+← BACK TO STUDIO
+</button>
+
+<script>
+
+let availableVoices = [];
+
+function loadVoices() {
+
+  if (!("speechSynthesis" in window)) {
+    voiceStatus.innerText =
+      "Speech synthesis is not supported on this browser.";
+    return;
+  }
+
+  const lang = voiceLanguage.value;
+
+  const prefix = {
+    my: "my",
+    th: "th",
+    en: "en"
+  }[lang];
+
+  availableVoices = speechSynthesis.getVoices();
+
+  voiceSelect.innerHTML =
+    '<option value="">Default Device Voice</option>';
+
+  availableVoices.forEach((voice, index) => {
+
+    if (voice.lang.toLowerCase().startsWith(prefix)) {
+
+      const option = document.createElement("option");
+
+      option.value = index;
+      option.textContent =
+        voice.name + " (" + voice.lang + ")";
+
+      voiceSelect.appendChild(option);
+
+    }
+
+  });
+
+}
+
+function previewVoice() {
+
+  if (!("speechSynthesis" in window)) {
+    voiceStatus.innerText =
+      "Your browser does not support voice preview.";
+    return;
+  }
+
+  const text = voiceScript.value.trim();
+
+  if (!text) {
+    voiceStatus.innerText =
+      "Please enter a script first.";
+    return;
+  }
+
+  speechSynthesis.cancel();
+
+  const utterance = new SpeechSynthesisUtterance(text);
+
+  const lang = voiceLanguage.value;
+
+  utterance.lang = {
+    my: "my-MM",
+    th: "th-TH",
+    en: "en-US"
+  }[lang];
+
+  utterance.rate = Number(speed.value);
+  utterance.pitch = Number(pitch.value);
+
+  if (voiceSelect.value !== "") {
+    utterance.voice =
+      availableVoices[Number(voiceSelect.value)];
+  }
+
+  utterance.onstart = function() {
+    voiceStatus.innerText = "🔊 Playing voice...";
+  };
+
+  utterance.onend = function() {
+    voiceStatus.innerText = "✅ Voice preview completed.";
+  };
+
+  utterance.onerror = function() {
+    voiceStatus.innerText =
+      "Voice preview failed. Check device voice support.";
+  };
+
+  speechSynthesis.speak(utterance);
+
+}
+
+function pauseVoice() {
+
+  if (speechSynthesis.speaking) {
+    speechSynthesis.pause();
+    voiceStatus.innerText = "Voice paused.";
+  }
+
+}
+
+function stopVoice() {
+
+  speechSynthesis.cancel();
+  voiceStatus.innerText = "Voice stopped.";
+
+}
+
+if ("speechSynthesis" in window) {
+
+  loadVoices();
+
+  speechSynthesis.onvoiceschanged = loadVoices;
+
+}
+
+</script></body>
+</html>

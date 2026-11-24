@@ -1,0 +1,343 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>CINEAI PRO</title>  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">  <meta name="theme-color" content="#100d18">
+  <meta name="mobile-web-app-capable" content="yes">  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding-bottom: 100px;
+      background: #0b0911;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+
+    .header {
+      padding: 20px;
+      background: linear-gradient(135deg, #29123f, #100d18);
+      border-bottom: 1px solid #49306d;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 15px;
+      border: 1px solid #a65cff;
+    }
+
+    .logo-text h2 {
+      margin: 0;
+      color: #d5a6ff;
+      letter-spacing: 2px;
+    }
+
+    .logo-text p {
+      margin: 5px 0 0;
+      font-size: 11px;
+      color: #c18a35;
+    }
+
+    .container {
+      padding: 18px;
+    }
+
+    .welcome {
+      color: #aaa;
+      font-size: 13px;
+      margin-top: 20px;
+    }
+
+    .hero {
+      margin-top: 15px;
+      padding: 25px 20px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #49216f, #171020);
+      border: 1px solid #9253d2;
+      box-shadow: 0 5px 25px rgba(139, 65, 219, 0.15);
+    }
+
+    .hero h1 {
+      font-size: 26px;
+      line-height: 1.3;
+    }
+
+    .hero p {
+      color: #d1c2df;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .primary-btn {
+      width: 100%;
+      padding: 15px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-weight: bold;
+      font-size: 15px;
+      background: linear-gradient(90deg, #873bd1, #c18aff);
+    }
+
+    .section-title {
+      color: #d5a6ff;
+      font-size: 18px;
+      margin: 28px 0 15px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 13px;
+    }
+
+    .card {
+      padding: 18px 12px;
+      text-align: center;
+      background: #191421;
+      border: 1px solid #49306d;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .card:active {
+      transform: scale(0.96);
+    }
+
+    .icon {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    .card h3 {
+      font-size: 14px;
+      margin: 5px 0;
+    }
+
+    .card p {
+      color: #aaa;
+      font-size: 11px;
+      margin: 5px 0;
+    }
+
+    .pro-card {
+      margin-top: 25px;
+      padding: 22px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #392348, #171020);
+      border: 1px solid #c18a35;
+    }
+
+    .pro-card h2 {
+      color: #f2cf83;
+    }
+
+    .pro-card p {
+      color: #c7b9d0;
+      font-size: 13px;
+    }
+
+    .project-card {
+      background: #191421;
+      padding: 18px;
+      border-radius: 15px;
+      border: 1px solid #49306d;
+      text-align: center;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      background: #100d18;
+      border-top: 1px solid #49306d;
+      padding: 12px 0;
+      z-index: 999;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      color: #c9b5e8;
+      text-decoration: none;
+      font-size: 20px;
+    }
+
+    .nav-item small {
+      font-size: 10px;
+    }
+
+    .footer {
+      text-align: center;
+      color: #777;
+      font-size: 11px;
+      padding: 25px 0;
+    }
+  </style></head><body>  <!-- HEADER -->  <header class="header"><div class="logo-area">
+
+  <img src="icon.svg" class="logo-icon" alt="CINEAI Logo">
+
+  <div class="logo-text">
+    <h2>CINEAI PRO</h2>
+    <p>YOUR CINEMATIC AI STUDIO</p>
+  </div>
+
+</div>
+
+  </header>  <main class="container"><p class="welcome">Welcome to your creative studio 👋</p>
+
+<!-- HERO -->
+
+<section class="hero">
+
+  <h1>Create Amazing AI Recaps 🎬</h1>
+
+  <p>
+    Turn your ideas into cinematic videos with
+    AI-powered creative tools.
+  </p>
+
+  <button class="primary-btn" onclick="createRecap()">
+    ✨ CREATE NEW RECAP
+  </button>
+
+</section>
+
+<!-- QUICK TOOLS -->
+
+<h2 class="section-title">⚡ Quick Tools</h2>
+
+<div class="grid">
+
+  <div class="card" onclick="openTool('Voice')">
+    <div class="icon">🎙️</div>
+    <h3>Voice Studio</h3>
+    <p>AI Voice & Narration</p>
+  </div>
+
+  <div class="card" onclick="openTool('Subtitle')">
+    <div class="icon">💬</div>
+    <h3>Subtitle Studio</h3>
+    <p>Subtitle Editing</p>
+  </div>
+
+  <div class="card" onclick="openTool('Translate')">
+    <div class="icon">🌐</div>
+    <h3>AI Translate</h3>
+    <p>Myanmar / Thai / English</p>
+  </div>
+
+  <div class="card" onclick="openTool('Export')">
+    <div class="icon">📤</div>
+    <h3>Export Studio</h3>
+    <p>1080p / 8K Settings</p>
+  </div>
+
+  <div class="card" onclick="openTool('Studio')">
+    <div class="icon">✨</div>
+    <h3>AI Studio</h3>
+    <p>Creative Dashboard</p>
+  </div>
+
+  <div class="card" onclick="openTool('Projects')">
+    <div class="icon">📁</div>
+    <h3>My Projects</h3>
+    <p>Saved Projects</p>
+  </div>
+
+</div>
+
+<!-- PRO MEMBERSHIP -->
+
+<section class="pro-card">
+
+  <h2>👑 CINEAI PRO</h2>
+
+  <p>
+    Unlock premium voices, AI Flow,
+    Music Flow and advanced creative tools.
+  </p>
+
+  <button class="primary-btn" onclick="openTool('Pro')">
+    EXPLORE PRO MEMBERSHIP
+  </button>
+
+</section>
+
+<!-- RECENT PROJECTS -->
+
+<h2 class="section-title">🎬 My Recent Projects</h2>
+
+<div class="project-card" onclick="openTool('Projects')">
+
+  <div class="icon">📂</div>
+
+  <h3>My Projects</h3>
+
+  <p>Open and manage your saved projects.</p>
+
+</div>
+
+<div class="footer">
+  CINEAI PRO © 2026<br>
+  Create Beyond Imagination
+</div>
+
+  </main>  <!-- BOTTOM NAVIGATION -->  <nav class="bottom-nav"><a href="index.html" class="nav-item">
+  <span>🏠</span>
+  <small>Home</small>
+</a>
+
+<a href="create.html" class="nav-item">
+  <span>🎬</span>
+  <small>Create</small>
+</a>
+
+<a href="studio.html" class="nav-item">
+  <span>✨</span>
+  <small>Studio</small>
+</a>
+
+<a href="projects.html" class="nav-item">
+  <span>📁</span>
+  <small>Projects</small>
+</a>
+
+<a href="pro.html" class="nav-item">
+  <span>👑</span>
+  <small>Pro</small>
+</a>
+
+  </nav>  <!-- MAIN JAVASCRIPT -->  <script src="script.js"></script>  <!-- SERVICE WORKER -->  <script>
+    if ("serviceWorker" in navigator) {
+
+      window.addEventListener("load", function() {
+
+        navigator.serviceWorker.register("./service-worker.js")
+          .then(function() {
+            console.log("CINEAI PRO Offline Ready");
+          })
+          .catch(function(error) {
+            console.log("Service Worker Error:", error);
+          });
+
+      });
+
+    }
+  </script></body>
+</html>
